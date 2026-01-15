@@ -1,0 +1,53 @@
+{
+  "name": "gitmirror",
+  "version": "1.0.0",
+  "description": "Command line tool for mirroring one or more git repositories",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/falkorclark/gitmirror.git"
+  },
+  "bin": {
+    "renameit": "lib/bin/cli.js"
+  },
+  "module": "./lib/gitmirror.js",
+  "main": "./lib/gitmirror.js",
+  "types": "./lib/gitmirror.d.ts",
+  "exports": {
+    ".": "./lib/gitmirror.js",
+    "./lib/*.js": "./lib/*.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "start": "node --import tsx src/bin/cli.ts",
+    "build": "node --import tsx src/bin/build.ts",
+    "prepublishOnly": "npm run build"
+  },
+  "author": "Falkor Clark <falkorclark@gmail.com>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [
+    "git",
+    "mirrors"
+  ],
+  "dependencies": {
+    "colors": "^1.4.0",
+    "fs-extra": "^11.3.3",
+    "yargs": "^18.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "@stylistic/eslint-plugin": "^5.7.0",
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^25.0.8",
+    "@types/yargs": "^17.0.35",
+    "eslint": "^9.39.2",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.53.0"
+  }
+}

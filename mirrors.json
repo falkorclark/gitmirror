@@ -1,0 +1,85 @@
+{
+  "nglagent": {
+    "origin": "https://taris.ad.anyarinc.com/Effects%20Sciences/DEWD/_git/nglagent.git",
+    "mirrors": {
+      "dle": {
+        "url": "https://gitlab.dle.afrl.af.mil/dewd/anyar/nglagent.git",
+        "push": ["main"]
+      }
+    }
+  },
+  "dewdapp": {
+    "origin": "https://taris.ad.anyarinc.com/Effects%20Sciences/DEWD/_git/dewdapp.git",
+    "mirrors": {
+      "dle": {
+        "url": "https://gitlab.dle.afrl.af.mil/dewd/anyar/dewdapp.git",
+        "push": ["main"]
+      }
+    }
+  },
+  "ddmp": {
+    "origin": "https://taris.ad.anyarinc.com/Effects%20Sciences/DEWD/_git/ddmp.git",
+    "mirrors": {
+      "dle": {
+        "url": "https://gitlab.dle.afrl.af.mil/dewd/anyar/ddmp.git",
+        "push": ["main"]
+      }
+    }
+  },
+  "dewddevops": {
+    "origin": "https://taris.ad.anyarinc.com/Effects%20Sciences/DEWD/_git/dewddevops.git",
+    "mirrors": {
+      "dle": {
+        "url": "https://gitlab.dle.afrl.af.mil/dewd/anyar/dewddevops.git",
+        "push": ["main"]
+      }
+    }
+  },
+  "iterativedistributionsplugin": {
+    "origin": "https://taris.ad.anyarinc.com/Effects%20Sciences/EF-AFSIM/_git/iterativedistributionsplugin.git",
+    "mirrors": {
+      "afproducts": {
+        "url": "https://devtools.afproducts.net/bitbucket/scm/efp/iterativedistributionsplugin.git",
+        "push": ["anyar/ef5/main", "anyar/develop"]
+      }
+    }
+  },
+  "javascriptplugin": {
+    "origin": "https://taris.ad.anyarinc.com/Effects%20Sciences/EF-AFSIM/_git/javascriptplugin.git",
+    "mirrors": {
+      "afproducts": {
+        "url": "https://devtools.afproducts.net/bitbucket/scm/efp/javascriptplugin.git",
+        "push": ["anyar/ef5/main", "anyar/develop"]
+      }
+    }
+  },
+  "outputinterface": {
+    "origin": "https://taris.ad.anyarinc.com/Effects%20Sciences/EF-AFSIM/_git/outputinterface.git",
+    "mirrors": {
+      "afproducts": {
+        "url": "https://devtools.afproducts.net/bitbucket/scm/efp/outputinterface.git",
+        "push": ["anyar/story/14700-output-interface"],
+        "fetch": ["develop"]
+      }
+    }
+  },
+  "outputplugin": {
+    "origin": "https://taris.ad.anyarinc.com/Effects%20Sciences/EF-AFSIM/_git/outputplugin.git",
+    "mirrors": {
+      "afproducts": {
+        "url": "https://devtools.afproducts.net/bitbucket/scm/efp/outputplugin.git",
+        "push": ["anyar/ef5/main", "anyar/develop", "anyar/story/14701-output-interface"],
+        "fetch": ["master", "develop", "ef5/develop"]
+      }
+    }
+  },
+  "pktablegenerator": {
+    "origin": "https://taris.ad.anyarinc.com/Effects%20Sciences/EF-AFSIM/_git/pktablegenerator.git",
+    "mirrors": {
+      "afproducts": {
+        "url": "https://devtools.afproducts.net/bitbucket/scm/efp/pktablegenerator.git",
+        "push": ["anyar/ef5/main", "anyar/develop"]
+      }
+    }
+  }
+}
