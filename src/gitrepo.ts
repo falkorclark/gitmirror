@@ -5,7 +5,7 @@
 export interface GitMirrorConfig
 {
   url:string,
-  push:string[],
+  push?:string[],
   fetch?:string[],
 }
 

@@ -5,7 +5,7 @@ import colors from 'colors';
 import fs from 'fs-extra';
 import path from 'node:path';
 import { spawnSync, SpawnSyncReturns, StdioOptions } from 'node:child_process';
-import { GitRepo } from './gitrepo';
+import { GitMirrors, GitRepo } from './gitrepo';
 
 export * from './gitmirroroptions';
 
@@ -180,32 +180,32 @@ export default class GitMirror
     // get the origin
     if (!('origin' in repo))
       return this.missingKey(`{ "${name}": { ${colors.red('"origin": string')} } }`);
-    const origin = repo.origin;
-
     // get the mirrors
     if (!('mirrors' in repo))
       return this.missingKey(`{ "${name}": { ${colors.red('"mirrors": {...}')} } }`);
-    const mirrors = {...repo.mirrors};
-
+    
+    // adjust the mirrors based on user input
+    let mirrors:GitMirrors = {};
     // adjust mirrors based on the requested list
-    if (this.options.mirrors)
+    if (this.options.mirrors.length > 0)
     {
-      for(const mirror in Object.keys(mirrors))
-        if (!(mirror in this.options.mirrors))
-          Reflect.deleteProperty(mirrors, mirror);
+      for(const mirror of Object.keys(repo.mirrors))
+        if (this.options.mirrors.includes(mirror))
+          mirrors[mirror] = repo.mirrors[mirror];
     }
+    else mirrors = repo.mirrors;
     // return if no mirrors
-    if (!mirrors) return;
+    if (Object.keys(mirrors).length == 0) return;
 
     // initialize or fetch the latest from the repository
     const clone = this.options.output + '/' + name;
     if (!fs.existsSync(clone))
     {
       this.group('Initializing', clone);
-      this.git(['clone', '--mirror', origin, clone]);
+      this.git(['clone', '--mirror', repo.origin, clone]);
       if (!fs.existsSync(clone) && !this.options.dryRun)
       {
-        this.error(`Unable to clone [${colors.yellow(origin)}]`);
+        this.error(`Unable to clone [${colors.yellow(repo.origin)}]`);
         this.groupEnd();
         return;
       }
@@ -213,7 +213,7 @@ export default class GitMirror
     }
     else
     {
-      this.group('Fetching', origin);
+      this.group('Fetching', repo.origin);
       this.git(['fetch', 'origin', '--prune', '-v'], clone);
       this.groupEnd();
     }
