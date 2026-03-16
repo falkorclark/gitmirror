@@ -40,7 +40,27 @@
     "mirrors": {
       "afproducts": {
         "url": "https://devtools.afproducts.net/bitbucket/scm/efp/iterativedistributionsplugin.git",
-        "push": ["anyar/ef5/main", "anyar/develop"]
+        "push": ["anyar/develop"]
+      }
+    }
+  },
+  "faltplugin": {
+    "origin": "https://taris.ad.anyarinc.com/Effects%20Sciences/EF-AFSIM/_git/faltplugin.git",
+    "mirrors": {
+      "afproducts": {
+        "url": "https://devtools.afproducts.net/bitbucket/scm/efp/faltplugin.git",
+        "push": ["anyar/develop", "anyar/story/14809-output-interface"],
+        "fetch": ["master", "develop"]
+      }
+    }
+  },
+  "fatepenbehaviors": {
+    "origin": "https://taris.ad.anyarinc.com/Effects%20Sciences/EF-AFSIM/_git/fatepenbehaviors.git",
+    "mirrors": {
+      "afproducts": {
+        "url": "https://devtools.afproducts.net/bitbucket/scm/efp/fatepenbehaviors.git",
+        "push": ["anyar/develop", "anyar/story/14810-output-interface"],
+        "fetch": ["master", "develop"]
       }
     }
   },
@@ -49,7 +69,7 @@
     "mirrors": {
       "afproducts": {
         "url": "https://devtools.afproducts.net/bitbucket/scm/efp/javascriptplugin.git",
-        "push": ["anyar/ef5/main", "anyar/develop"]
+        "push": ["anyar/develop", "anyar/story/14772-output-interface"]
       }
     }
   },
@@ -58,8 +78,8 @@
     "mirrors": {
       "afproducts": {
         "url": "https://devtools.afproducts.net/bitbucket/scm/efp/outputinterface.git",
-        "push": ["anyar/story/14700-output-interface"],
-        "fetch": ["develop"]
+        "push": ["anyar/develop", "anyar/story/14700-output-interface"],
+        "fetch": ["master", "develop"]
       }
     }
   },
@@ -68,8 +88,8 @@
     "mirrors": {
       "afproducts": {
         "url": "https://devtools.afproducts.net/bitbucket/scm/efp/outputplugin.git",
-        "push": ["anyar/ef5/main", "anyar/develop", "anyar/story/14701-output-interface"],
-        "fetch": ["master", "develop", "ef5/develop"]
+        "push": ["anyar/develop"],
+        "fetch": ["master", "develop"]
       }
     }
   },
@@ -78,7 +98,7 @@
     "mirrors": {
       "afproducts": {
         "url": "https://devtools.afproducts.net/bitbucket/scm/efp/pktablegenerator.git",
-        "push": ["anyar/ef5/main", "anyar/develop"]
+        "push": ["anyar/develop"]
       }
     }
   }

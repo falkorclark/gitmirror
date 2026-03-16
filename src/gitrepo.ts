@@ -10,12 +10,18 @@ export interface GitMirrorConfig
 }
 
 /**
+ * Configuration for the list of mirrors
+ */
+export interface GitMirrors
+{
+  [key:string]: GitMirrorConfig,
+}
+
+/**
  * Configuration for a git repository
  */
 export interface GitRepo 
 {
   origin:string,
-  mirrors:{
-    [key:string]: GitMirrorConfig,
-  },
+  mirrors:GitMirrors,
 }

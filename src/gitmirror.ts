@@ -195,7 +195,11 @@ export default class GitMirror
     }
     else mirrors = repo.mirrors;
     // return if no mirrors
-    if (Object.keys(mirrors).length == 0) return;
+    if (Object.keys(mirrors).length == 0)
+    {
+      this.log('Skipping', colors.yellow('No requested mirrors'));
+      return;
+    }
 
     // initialize or fetch the latest from the repository
     const clone = this.options.output + '/' + name;
