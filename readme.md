@@ -1,6 +1,22 @@
-# Introduction 
-This repository stores the scripts used to maintain git mirrors and a mirrors
-file for the anyar mirrors.
+# GitMirror 
+
+> Cross-platform command line utility for maintaining Git mirrors
+
+The GitMirror project is a lightweight script for maintaining mirrors of
+git repositories on multiple different servers.
+
+## Installation
+
+```sh
+npm install gitmirror
+# or
+yarn add gitmirror
+# or
+pnpm add gitmirror
+```
+
+GitMirror also provides a command line interface (CLI) that can be installed
+globally by passing the `-g` flag when installing.
 
 # Configuration
 Execution of the sync script requires a configuration file in JSON format. By
@@ -25,7 +41,7 @@ working directory. The schema for the configuration file is as follows:
 ## Origins
 The top-level object contains the list of repositories to mirror. Any number
 of repositories may be given and the key for each will be used as the folder 
-name for the clone and as the keyword for the `--repos` argument when explciitly
+name for the clone and as the keyword for the `--repos` argument when explicitly
 syncing repositories.
 
 ## Mirrors
@@ -43,18 +59,17 @@ of branches to fetch from the mirror and push back to the origin (if not given,
 no branches will be fetched from the mirror).
 
 # Execution
-Typically, all that needs to be done is to execute the sync.py script. Any 
-errors that occur will have to be handled independently. On Windows, there is
-a sync.bat script that will call `python sync.py` with the supplied arguments.
+Typically, all that needs to be done is to execute the `gitmirror` command. Any 
+errors that occur will have to be handled independently.
 Additional help on executing the script can be output by passing any of three
 arguments to the script: `-h`, `--help`, or `-?`.
 
 ## Example Execution
 The following are a few examples of executing the script:
 
-  1. Display help and exit: `python sync.py -?`
-  2. Sync everything: `python sync.py`
-  3. Only sync repo1 and repo2: `python sync.py -r repo1 repo2`
-  4. Only sync mirror1 and mirror2: `python sync.py -m mirror1 mirror2`
-  5. Only sync repo1 to mirror1: `python sync.py -r repo1 -m mirror1`
-  6. Supply location of config file: `python sync.py -i myconfig.json`
+  1. Display help and exit: `gitmirror -?`
+  2. Sync everything: `gitmirror`
+  3. Only sync repo1 and repo2: `gitmirror -r repo1 repo2`
+  4. Only sync mirror1 and mirror2: `gitmirror -m mirror1 mirror2`
+  5. Only sync repo1 to mirror1: `gitmirror -r repo1 -m mirror1`
+  6. Supply location of config file: `gitmirror -i myconfig.json`
