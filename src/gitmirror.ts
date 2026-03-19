@@ -26,7 +26,7 @@ export default class GitMirror
   /**
    * The name of the app
    */
-  public static readonly name:string = name;
+  public static readonly name:string = name.replace('@neverending/', '');
 
   /**
    * Options passed to {@link GitMirror}

@@ -1,5 +1,5 @@
 {
-  "name": "gitmirror",
+  "name": "@neverending/gitmirror",
   "version": "1.0.0",
   "description": "Command line tool for mirroring one or more git repositories",
   "repository": {
