@@ -74,11 +74,9 @@ export default class GitMirrorCommand<U extends GitMirrorOptions> implements
   public handler(args:ArgumentsCamelCase<U>)
   {
     // create the instance
-    let cmd = undefined;
     try 
     {
-      cmd = new GitMirror({...args, cli: true});
-      cmd.execute();
+      GitMirror.mirror({...args, cli: true});
     }
     catch (e:any)
     { 

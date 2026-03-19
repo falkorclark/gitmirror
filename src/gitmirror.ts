@@ -74,6 +74,16 @@ export default class GitMirror
   }
 
   /**
+   * Executes the mirrors with the given options
+   * @param options the options to use when executing
+   */
+  public static mirror(options:GitMirrorOptions)
+  {
+    const git = new GitMirror(options);
+    git.execute();
+  }
+
+  /**
    * Executes with the current {@link GitMirrorOptions}
    */
   public execute()

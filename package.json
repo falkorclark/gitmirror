@@ -7,7 +7,7 @@
     "url": "git+https://github.com/falkorclark/gitmirror.git"
   },
   "bin": {
-    "renameit": "lib/bin/cli.js"
+    "gitmirror": "lib/bin/cli.js"
   },
   "module": "./lib/gitmirror.js",
   "main": "./lib/gitmirror.js",
@@ -18,11 +18,13 @@
     "./package.json": "./package.json"
   },
   "files": [
-    "lib"
+    "lib",
+    "tests"
   ],
   "scripts": {
     "start": "node --import tsx src/bin/cli.ts",
     "build": "node --import tsx src/bin/build.ts",
+    "test": "npx eslint src --quiet && node --import tsx src/bin/test.ts",
     "prepublishOnly": "npm run build"
   },
   "author": "Falkor Clark <falkorclark@gmail.com>",
