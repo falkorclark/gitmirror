@@ -8,11 +8,11 @@ git repositories on multiple different servers.
 ## Installation
 
 ```sh
-npm install gitmirror
+npm install @neverending/gitmirror
 # or
-yarn add gitmirror
+yarn add @neverending/gitmirror
 # or
-pnpm add gitmirror
+pnpm add @neverending/gitmirror
 ```
 
 GitMirror also provides a command line interface (CLI) that can be installed

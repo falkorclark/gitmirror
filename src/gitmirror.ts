@@ -158,7 +158,7 @@ export default class GitMirror
     if (this.options.dryRun) return undefined;
     const opts:StdioOptions = this.options.verbose ? 'inherit' : 'pipe';
     const result = spawnSync('git', args, {
-      shell:true, encoding:'utf8', cwd: wd, stdio: opts
+      encoding:'utf8', cwd: wd, stdio: opts
     });
     return result;
   }

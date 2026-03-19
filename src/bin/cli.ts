@@ -2,8 +2,8 @@
 
 import { hideBin } from 'yargs/helpers';
 import yargs from 'yargs';
-import { name, version } from '../../package.json';
 import GitMirrorCommand from '../gitmirrorcommand';
+import GitMirror from '../gitmirror';
 
 // Handle startup
 function main() 
@@ -15,10 +15,10 @@ function main()
       'strip-dashed': true,
     })
     .help('help', 'show help and exit')
-    .version('version', 'show version and exit', version)
+    .version('version', 'show version and exit', GitMirror.version)
     .alias({ help: ['h', '?'] })
     .command(new GitMirrorCommand)
-    .scriptName(name)
+    .scriptName(GitMirror.name)
     .parse();
 }
 

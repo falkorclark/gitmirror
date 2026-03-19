@@ -1,6 +1,6 @@
 {
   "name": "@neverending/gitmirror",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Command line tool for mirroring one or more git repositories",
   "repository": {
     "type": "git",
@@ -24,32 +24,37 @@
   "scripts": {
     "start": "node --import tsx src/bin/cli.ts",
     "build": "node --import tsx src/bin/build.ts",
-    "test": "npx eslint src --quiet && node --import tsx src/bin/test.ts",
-    "prepublishOnly": "npm run build"
+    "test": "npx eslint src --quiet && node --import tsx src/bin/test.ts"
   },
   "author": "Falkor Clark <falkorclark@gmail.com>",
   "license": "MIT",
   "engines": {
     "node": ">=22"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [
     "git",
-    "mirrors"
+    "mirrors",
+    "mirror",
+    "gitmirror",
+    "gitmirrors"
   ],
   "dependencies": {
     "colors": "^1.4.0",
-    "fs-extra": "^11.3.3",
+    "fs-extra": "^11.3.4",
     "yargs": "^18.0.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.2",
-    "@stylistic/eslint-plugin": "^5.7.0",
+    "@eslint/js": "^10.0.1",
+    "@stylistic/eslint-plugin": "^5.10.0",
     "@types/fs-extra": "^11.0.4",
-    "@types/node": "^25.0.8",
+    "@types/node": "^25.5.0",
     "@types/yargs": "^17.0.35",
-    "eslint": "^9.39.2",
+    "eslint": "^10.0.3",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.53.0"
+    "typescript-eslint": "^8.57.1"
   }
 }
