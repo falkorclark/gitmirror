@@ -149,17 +149,23 @@ export default class GitMirror
    * Executes the git command
    * @param args the arguments to pass to the git command
    * @param wd the working directory to execute the command in
-   * @param quiet executes the command with no output
    * @returns the result of the executed command
    */
   private git(args:string[], wd:string|undefined = undefined):SpawnSyncReturns<string>|undefined
   {
-    if (this.options.verbose) this.log('Executing', `git ${args.join(' ')}`);
-    if (this.options.dryRun) return undefined;
-    const opts:StdioOptions = this.options.verbose ? 'inherit' : 'pipe';
+    if (this.options.verbose) this.group('Executing', `git ${args.join(' ')}`);
+    if (this.options.dryRun)
+    {
+      this.groupEnd();
+      return undefined;
+    }
     const result = spawnSync('git', args, {
-      encoding:'utf8', cwd: wd, stdio: opts
+      encoding:'utf8', cwd: wd, stdio: 'pipe'
     });
+    if (this.options.verbose && result.stdout) console.log(result.stdout);
+    if (this.options.verbose && result.stderr) console.log(result.stderr);
+    
+    this.groupEnd();
     return result;
   }
 
