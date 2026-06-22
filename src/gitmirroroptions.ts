@@ -5,7 +5,8 @@
 export interface GitMirrorOptions
 {
   /**
-   * JSON file containing the repositories to mirror [default: ./mirrors.json]
+   * JSON file containing the repositories to mirror [default: ./mirrors.json] or
+   * a git repository URL for command line mirror
    */
   input?:string,
   /**
@@ -17,7 +18,7 @@ export interface GitMirrorOptions
    */
   repos?:string[],
   /**
-   * mirrors to limit the sync to
+   * mirrors to limit the sync to or URLs of mirrors when input is a URL
    */
   mirrors?:string[],
   /**

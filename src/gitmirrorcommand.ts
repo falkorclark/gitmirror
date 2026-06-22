@@ -12,7 +12,8 @@ export const GitMirrorYargs:Record<string, yargs.Options> = {
   input: {
     alias: ['i'],
     type: 'string',
-    describe: 'JSON file containing the repositories to mirror',
+    describe: 'JSON file containing the repositories to mirror or ' +
+              'a git repository URL to replace config file',
     default: './mirrors.json',
   },
   output: {
@@ -28,7 +29,7 @@ export const GitMirrorYargs:Record<string, yargs.Options> = {
   },
   mirrors: {
     alias: ['m'],
-    describe: 'list of mirrors to limit the sync to',
+    describe: 'list of mirrors to limit the sync to or URLs to mirror the input to',
     type: 'array',
   },
   color: {
