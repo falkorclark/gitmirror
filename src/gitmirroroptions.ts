@@ -10,17 +10,25 @@ export interface GitMirrorOptions
    */
   input?:string,
   /**
-   * folder path to clone the repositories to [default: ./repos]
+   * mirrors to limit the sync to or URLs of mirrors when input is a URL
    */
-  output?:string,
+  mirrors?:string[],
+  /**
+   * list of branches to push to the mirrors [default: all]
+   */
+  push?:string[],
+  /**
+   * list of branches to fetch from the mirrors [default: none]
+   */
+  fetch?:string[],
   /**
    * repositories to limit the sync to
    */
   repos?:string[],
   /**
-   * mirrors to limit the sync to or URLs of mirrors when input is a URL
+   * folder path to clone the repositories to [default: ./repos]
    */
-  mirrors?:string[],
+  output?:string,
   /**
    * if true, console output will be colored, else it will not
    */
@@ -48,9 +56,11 @@ export interface GitMirrorOptions
  */
 export const DefaultOptions:Required<GitMirrorOptions> = {
   input: './mirrors.json',
-  output: './repos',
-  repos: [],
   mirrors: [],
+  push: [],
+  fetch: [],
+  repos: [],
+  output: './repos',
   color: true,
   verbose: false,
   quiet: false,

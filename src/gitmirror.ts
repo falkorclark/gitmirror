@@ -125,7 +125,11 @@ export default class GitMirror
       for(const mirror of this.options.mirrors)
       {
         const name = repoName(mirror);
-        if (name) mirrors[name] = { url: mirror };
+        if (name) mirrors[name] = { 
+          url: mirror, 
+          push: this.options.push, 
+          fetch: this.options.fetch
+        };
       }
 
       const name = repoName(this.options.input);
@@ -219,6 +223,7 @@ export default class GitMirror
       const url = new URL(repo);
       if (url.protocol === 'http:' || url.protocol === 'https:')
       {
+        if (this.options.dryRun) return true;
         const result = this.git(['ls-remote', repo, 'HEAD']);
         if (result && result.status === 0) return true;
       }
