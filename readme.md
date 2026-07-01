@@ -18,8 +18,39 @@ pnpm add @neverending/gitmirror
 GitMirror also provides a command line interface (CLI) that can be installed
 globally by passing the `-g` flag when installing.
 
-# Configuration
-Execution of the sync script requires a configuration file in JSON format. By
+# Single Repository Mode
+As of v1.0.3, the CLI provided by gitmirrors accepts arguments to allow 
+mirroring one repository without a configuration file. The command accepts all
+normal arguments with the following modifications:
+
+1. The `--input` argument is used as the origin of the repository to mirror.
+   The value given is implied when in it is a git URL.
+2. The `--mirrors` argument is used as a list of git URLs representing mirrors.
+3. Two extra optional arguments are given:
+   1. `--push`: specific branches to push to the mirrors [default: all]
+   2. `--fetch`: for two-way syncs, the branches to fetch from the mirror 
+      [default: none]
+
+## Example Execution
+The following are a few examples of executing in single repository mode :
+
+  1. Display help and exit: `gitmirror -?`
+  2. Mirror from **foo** to **bar**: 
+     ```bash
+     gitmirror -i https://foo.git -m https://bar.git
+     ```
+  3. Mirror from **foo** to **bar**, but only **foo**'s **main** branch:
+     ```bash
+     gitmirror -i https://foo.git -m https://bar.git --push main
+     ```
+  4. Mirror from **foo** to **bar** and fetch **bar**'s **changes** branch 
+     into **foo**:
+     ```bash
+     gitmirror -i https://foo.git -m https://bar.git --fetch changes
+     ```
+
+# Multi Repository Mode
+Execution requires a configuration file in JSON format. By
 default, the script will look for a file called **mirrors.json** in the current
 working directory. The schema for the configuration file is as follows:
 
@@ -58,14 +89,14 @@ the mirror (if not given, all branches are pushed). The **fetch** key is a list
 of branches to fetch from the mirror and push back to the origin (if not given,
 no branches will be fetched from the mirror).
 
-# Execution
+## Execution
 Typically, all that needs to be done is to execute the `gitmirror` command. Any 
 errors that occur will have to be handled independently.
 Additional help on executing the script can be output by passing any of three
 arguments to the script: `-h`, `--help`, or `-?`.
 
-## Example Execution
-The following are a few examples of executing the script:
+### Example Execution
+The following are a few examples of executing multi repository mode:
 
   1. Display help and exit: `gitmirror -?`
   2. Sync everything: `gitmirror`
