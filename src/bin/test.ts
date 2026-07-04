@@ -18,9 +18,7 @@ async function main()
 {
   const tests:Record<string, TestFunc> = {
     full: full,
-    dle: dle,
-    afproducts: afproducts,
-    jsp: jsp,
+    markugen: markugen,
     multi: multi,
   };
 
@@ -74,30 +72,12 @@ function full(args:Options)
 }
 
 /**
- * Tests the dle mirror
+ * Tests the markugen repo
  * @param args the cli arguments
  */
-function dle(args:Options)
+function markugen(args:Options)
 {
-  GitMirror.mirror({...args, mirrors: ['dle']});
-}
-
-/**
- * Tests the afproducts mirror
- * @param args the cli arguments
- */
-function afproducts(args:Options)
-{
-  GitMirror.mirror({...args, mirrors: ['afproducts']});
-}
-
-/**
- * Tests the javascriptplugin repo
- * @param args the cli arguments
- */
-function jsp(args:Options)
-{
-  GitMirror.mirror({...args, repos: ['javascriptplugin']});
+  GitMirror.mirror({...args, repos: ['markugen']});
 }
 
 /**
@@ -106,7 +86,7 @@ function jsp(args:Options)
  */
 function multi(args:Options)
 {
-  GitMirror.mirror({...args, repos: ['javascriptplugin', 'nglagent']});
+  GitMirror.mirror({...args, repos: ['markugen', 'renameit']});
 }
 
 main();

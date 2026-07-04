@@ -12,24 +12,35 @@ export const GitMirrorYargs:Record<string, yargs.Options> = {
   input: {
     alias: ['i'],
     type: 'string',
-    describe: 'JSON file containing the repositories to mirror',
+    describe: 'JSON file containing the repositories to mirror or ' +
+              'a git repository URL for a single mirror',
     default: './mirrors.json',
   },
-  output: {
-    alias: ['o'],
-    type: 'string',
-    describe: 'folder path to clone the repositories to',
-    default: './repos',
+  mirrors: {
+    alias: ['m'],
+    describe: 'list of mirrors to limit the sync to or URLs to mirror the input to',
+    type: 'array',
+  },
+  push: {
+    alias: ['p'],
+    describe: 'list of branches to push to the mirrors [default: all]',
+    type: 'array',
+  },
+  fetch: {
+    alias: ['f'],
+    describe: 'list of branches to fetch from the mirrors [default: none]',
+    type: 'array',
   },
   repos: {
     alias: ['r'],
     describe: 'list of repositories to limit the sync to',
     type: 'array',
   },
-  mirrors: {
-    alias: ['m'],
-    describe: 'list of mirrors to limit the sync to',
-    type: 'array',
+  output: {
+    alias: ['o'],
+    type: 'string',
+    describe: 'folder path to clone the repositories to',
+    default: './repos',
   },
   color: {
     alias: ['c'],

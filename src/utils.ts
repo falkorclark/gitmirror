@@ -20,3 +20,13 @@ export function stringToRegex(str:string)
   }
   return new RegExp(str);
 }
+
+/**
+ * @param url the path to parse
+ * @returns the name of the repository at the given url
+ */
+export function repoName(url:string)
+{
+  const name = url.split('/').filter(e => e).pop() ?? '';
+  return name.replace('.git', '');
+}

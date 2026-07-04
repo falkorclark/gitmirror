@@ -5,7 +5,8 @@ import colors from 'colors';
 import fs from 'fs-extra';
 import path from 'node:path';
 import { spawnSync, SpawnSyncReturns, StdioOptions } from 'node:child_process';
-import { GitMirrors, GitRepo } from './gitrepo';
+import { GitMirrorConfig, GitMirrors, GitRepo } from './gitrepo';
+import { repoName } from './utils';
 
 export * from './gitmirroroptions';
 
@@ -36,6 +37,10 @@ export default class GitMirror
    * Stores the options to reset after execute
    */
   private _reset:Reset = {};
+  /**
+   * true if the execution is a single repository given at the command line
+   */
+  private _single = false;
 
   /**
    * Creates the object
@@ -69,9 +74,21 @@ export default class GitMirror
     }
 
     // resolve the paths
-    this._options.input = path.resolve(this.options.input).replace(/\\/g, '/');
-    this._options.output = path.resolve(this.options.output).replace(/\\/g, '/');
+    if (!URL.canParse(this.options.input))
+    {
+      this._options.input = path.resolve(this.options.input).replace(/\\/g, '/');
+      this._options.output = path.resolve(this.options.output).replace(/\\/g, '/');
+    }
   }
+
+  /**
+   * @returns true if the execution is a single repo given at the command line
+   */
+  public get single() { return this._single; }
+  /**
+   * Set true if the execution is a single repo given at the command line
+   */
+  private set single(single:boolean) { this._single = single; }
 
   /**
    * Executes the mirrors with the given options
@@ -90,18 +107,44 @@ export default class GitMirror
   {
     this.preExecute();
 
-    if (!fs.existsSync(this.options.input))
+    // check if the input is a git repository
+    this.single = this.isGitRepo(this.options.input);
+
+    // not a single execution and input file does not exist
+    if (!this.single && !fs.existsSync(this.options.input))
     {
       this.error(`Input path does not exist [${colors.yellow(this.options.input)}]`);
       process.exit(1);
     }
 
+    let repos:Record<string, GitRepo> = {};
+    // build config from command line
+    if (this.single) 
+    {
+      const mirrors:GitMirrors = {};
+      for(const mirror of this.options.mirrors)
+      {
+        const name = repoName(mirror);
+        if (name) mirrors[name] = { 
+          url: mirror, 
+          push: this.options.push, 
+          fetch: this.options.fetch
+        };
+      }
+
+      const name = repoName(this.options.input);
+      repos[name] = {
+        origin: this.options.input,
+        mirrors: mirrors
+      };
+    }
     // read in the configuration
-    const repos:Record<string, GitRepo> = fs.readJSONSync(this.options.input);
+    else repos = fs.readJSONSync(this.options.input);
+
     // create the output path
     if (!fs.existsSync(this.options.output)) fs.ensureDirSync(this.options.output);
 
-    // handle all teh repos
+    // handle all the repos
     for(const [name, repo] of Object.entries(repos))
     {
       // skip repos not given
@@ -170,6 +213,25 @@ export default class GitMirror
   }
 
   /**
+   * @param repo the path to the repo
+   * @returns true if the given url is a valid git repository
+   */
+  private isGitRepo(repo:string)
+  {
+    if (URL.canParse(repo))
+    {
+      const url = new URL(repo);
+      if (url.protocol === 'http:' || url.protocol === 'https:')
+      {
+        if (this.options.dryRun) return true;
+        const result = this.git(['ls-remote', repo, 'HEAD']);
+        if (result && result.status === 0) return true;
+      }
+    }
+    return false;
+  }
+
+  /**
    * Fetches the given remote or modifies it if it already exists
    * @param remote the name of the remote to fetch
    * @param url the url of the repository
@@ -203,7 +265,7 @@ export default class GitMirror
     // adjust the mirrors based on user input
     let mirrors:GitMirrors = {};
     // adjust mirrors based on the requested list
-    if (this.options.mirrors.length > 0)
+    if (!this.single && this.options.mirrors.length > 0)
     {
       for(const mirror of Object.keys(repo.mirrors))
         if (this.options.mirrors.includes(mirror))
