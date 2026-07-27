@@ -333,6 +333,9 @@ export default class GitMirror
       // fetch from remote and push to origin
       if ('fetch' in config && Array.isArray(config.fetch) && config.fetch.length > 0)
       {
+        this.group('Unset mirror', 'origin');
+        this.git(['config', '--unset', 'remote.origin.mirror'], clone);
+        this.groupEnd();
         this.group('Fetching', `${name} <- ${remote}`);
         this.git(['fetch', remote, ...config.fetch, '-v'], clone);
         this.groupEnd();
