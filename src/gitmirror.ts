@@ -337,7 +337,7 @@ export default class GitMirror
         this.git(['fetch', remote, ...config.fetch, '-v'], clone);
         this.groupEnd();
         this.group('Pushing', `${name} -> origin`);
-        this.git(['push', 'origin', '-v'], clone);
+        this.git(['push', 'origin', ...config.fetch, '-v'], clone);
         this.groupEnd();
       }
     }
