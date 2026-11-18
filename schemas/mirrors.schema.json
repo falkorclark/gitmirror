@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/falkorclark/gitmirror/main/schemas/mirrors.schema.json",
+  "title": "GitMirror Configuration",
+  "description": "Configuration file schema for mirroring one or more Git repositories using GitMirror.",
+  "type": "object",
+  "minProperties": 1,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Optional reference to the JSON schema for editor validation."
+    }
+  },
+  "additionalProperties": {
+    "$ref": "#/$defs/repository"
+  },
+  "$defs": {
+    "gitUrl": {
+      "description": "A standard Git URI (https://, ssh://, git://, file://) or an SCP-style SSH Git URL (e.g., git@github.com:user/repo.git).",
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+:[a-zA-Z0-9._~:/?#\\[\\]@!$&'()*+,;=-]+$"
+        }
+      ]
+    },
+    "repository": {
+      "type": "object",
+      "description": "Configuration for a single repository to be mirrored.",
+      "required": ["origin", "mirrors"],
+      "additionalProperties": false,
+      "properties": {
+        "origin": {
+          "$ref": "#/$defs/gitUrl",
+          "description": "The URL of the origin repository being mirrored."
+        },
+        "mirrors": {
+          "type": "object",
+          "description": "A map of mirror target names to their repository configurations.",
+          "minProperties": 1,
+          "additionalProperties": {
+            "$ref": "#/$defs/mirrorTarget"
+          }
+        }
+      }
+    },
+    "mirrorTarget": {
+      "type": "object",
+      "description": "Configuration for an individual remote mirror destination.",
+      "required": ["url"],
+      "additionalProperties": false,
+      "properties": {
+        "url": {
+          "$ref": "#/$defs/gitUrl",
+          "description": "The URL of the destination repository to mirror to."
+        },
+        "push": {
+          "type": "array",
+          "description": "List of branches to push to the mirror. If omitted, all branches are pushed.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "fetch": {
+          "type": "array",
+          "description": "List of branches to fetch from the mirror and push back to origin for two-way sync. If omitted, no branches are fetched.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      }
+    }
+  }
+}

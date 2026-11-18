@@ -1,11 +1,12 @@
 {
   "name": "@neverending/gitmirror",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Command line tool for mirroring one or more git repositories",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/falkorclark/gitmirror.git"
   },
+  "homepage": "https://falkorclark.github.io/gitmirror/",
   "bin": {
     "gitmirror": "lib/bin/cli.js"
   },
@@ -15,10 +16,14 @@
   "exports": {
     ".": "./lib/gitmirror.js",
     "./lib/*.js": "./lib/*.js",
+    "./schemas/*.json": "./schemas/*.json",
     "./package.json": "./package.json"
   },
   "files": [
+    "docs",
     "lib",
+    "markdown",
+    "schemas",
     "tests"
   ],
   "scripts": {
@@ -29,7 +34,7 @@
   "author": "Falkor Clark <falkorclark@gmail.com>",
   "license": "MIT",
   "engines": {
-    "node": ">=22"
+    "node": ">=24"
   },
   "publishConfig": {
     "access": "public"
@@ -42,22 +47,25 @@
     "gitmirrors"
   ],
   "dependencies": {
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
     "colors": "^1.4.0",
-    "fs-extra": "^11.3.4",
-    "yargs": "^18.0.0"
+    "fs-extra": "^11.4.1",
+    "yargs": "^18.2.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@stylistic/eslint-plugin": "^5.10.0",
+    "@neverending/markugen": "^2.0.11",
+    "@stylistic/eslint-plugin": "^6.0.1",
     "@types/fs-extra": "^11.0.4",
-    "@types/node": "^25.5.0",
+    "@types/node": "^26.6.6",
     "@types/yargs": "^17.0.35",
-    "eslint": "^10.0.3",
-    "tsx": "^4.21.0",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.57.1"
+    "eslint": "^10.15.0",
+    "tsx": "^4.23.15",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.73.0"
   },
   "allowScripts": {
-    "esbuild@0.27.4": true
+    "esbuild@0.28.2": true
   }
 }
