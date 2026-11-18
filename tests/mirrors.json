@@ -1,4 +1,5 @@
 {
+  "$schema": "https://raw.githubusercontent.com/falkorclark/gitmirror/main/schemas/mirrors.schema.json",
   "gitmirror": {
     "origin": "https://github.com/falkorclark/gitmirror.git",
     "mirrors": {

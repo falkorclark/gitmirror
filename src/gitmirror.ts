@@ -4,9 +4,12 @@ import { GitMirrorOptions, DefaultOptions } from './gitmirroroptions';
 import colors from 'colors';
 import fs from 'fs-extra';
 import path from 'node:path';
-import { spawnSync, SpawnSyncReturns, StdioOptions } from 'node:child_process';
-import { GitMirrorConfig, GitMirrors, GitRepo } from './gitrepo';
+import { spawnSync, SpawnSyncReturns } from 'node:child_process';
+import { GitMirrorConfig, GitMirrorTargets, GitRepoConfig } from './gitmirrorconfig';
 import { repoName } from './utils';
+import Ajv2020 from 'ajv/dist/2020.js';
+import addFormats from 'ajv-formats';
+import schema from '../schemas/mirrors.schema.json';
 
 export * from './gitmirroroptions';
 
@@ -117,15 +120,15 @@ export default class GitMirror
       process.exit(1);
     }
 
-    let repos:Record<string, GitRepo> = {};
+    let repos:GitMirrorConfig = {};
     // build config from command line
     if (this.single) 
     {
-      const mirrors:GitMirrors = {};
+      const targets:GitMirrorTargets = {};
       for(const mirror of this.options.mirrors)
       {
         const name = repoName(mirror);
-        if (name) mirrors[name] = { 
+        if (name) targets[name] = { 
           url: mirror, 
           push: this.options.push, 
           fetch: this.options.fetch
@@ -135,11 +138,14 @@ export default class GitMirror
       const name = repoName(this.options.input);
       repos[name] = {
         origin: this.options.input,
-        mirrors: mirrors
+        mirrors: targets
       };
     }
     // read in the configuration
     else repos = fs.readJSONSync(this.options.input);
+
+    // validate the configuration
+    repos = this.validateConfig(repos);
 
     // create the output path
     if (!fs.existsSync(this.options.output)) fs.ensureDirSync(this.options.output);
@@ -199,7 +205,7 @@ export default class GitMirror
     if (this.options.verbose) this.group('Executing', `git ${args.join(' ')}`);
     if (this.options.dryRun)
     {
-      this.groupEnd();
+      if (this.options.verbose) this.groupEnd();
       return undefined;
     }
     const result = spawnSync('git', args, {
@@ -208,7 +214,7 @@ export default class GitMirror
     if (this.options.verbose && result.stdout) console.log(result.stdout);
     if (this.options.verbose && result.stderr) console.log(result.stderr);
     
-    this.groupEnd();
+    if (this.options.verbose) this.groupEnd();
     return result;
   }
 
@@ -253,17 +259,10 @@ export default class GitMirror
    * @param repo the repository config
    * @returns true if successful, false otherwise
    */
-  private sync(name:string, repo:GitRepo)
+  private sync(name:string, repo:GitRepoConfig)
   {
-    // get the origin
-    if (!('origin' in repo))
-      return this.missingKey(`{ "${name}": { ${colors.red('"origin": string')} } }`);
-    // get the mirrors
-    if (!('mirrors' in repo))
-      return this.missingKey(`{ "${name}": { ${colors.red('"mirrors": {...}')} } }`);
-    
     // adjust the mirrors based on user input
-    let mirrors:GitMirrors = {};
+    let mirrors:GitMirrorTargets = {};
     // adjust mirrors based on the requested list
     if (!this.single && this.options.mirrors.length > 0)
     {
@@ -303,13 +302,6 @@ export default class GitMirror
     // loop over all of the mirrors and perform the sync
     for(const [remote, config] of Object.entries(mirrors))
     {
-      // must have a url
-      if (!('url' in config))
-      {
-        this.missingKey(`{ "${name}": { "mirrors": { "${remote}": { ${colors.red('"url": string')} } } } }`);
-        continue;
-      }
-
       // fetch the mirror
       this.group('Remoting', name);
       const result = this.gitRemote(remote, config.url, clone);
@@ -376,12 +368,36 @@ export default class GitMirror
   {
     console.error(`${colors.red('Error:')} ${msg}`);
   }
+
   /**
-   * Outputs a missing key error
-   * @param json the json for the missing key
+   * Validates the given configuration against the schema
+   * @param config the configuration to validate
+   * @returns the validated configuration or an empty object if invalid 
    */
-  private missingKey(json:string)
+  private validateConfig(config:unknown):GitMirrorConfig
   {
-    this.error(`Missing required key ${colors.yellow(json)}`);
+    // Initialize Ajv for Draft 2020-12 and register URI format validation
+    const ajv = new Ajv2020({ allErrors: true });
+    addFormats(ajv);
+
+    const validate = ajv.compile<GitMirrorConfig>(schema);
+
+    // Strip optional $schema key before returning or validating repository entries
+    if (typeof config === 'object' && config !== null && '$schema' in config) 
+    {
+      const { $schema, ...repos } = config as Record<string, unknown>;
+      config = repos;
+    }
+
+    if (!validate(config)) 
+    {
+      const messages = (validate.errors ?? [])
+        .map((err) => `${err.instancePath || 'root'} ${err.message ?? 'is invalid'}`)
+        .join('\n  - ');
+      this.error(`Invalid mirrors configuration:\n  - ${messages}`);
+      return {};
+    }
+
+    return config as GitMirrorConfig;
   }
 }

@@ -10,7 +10,7 @@ import colors from 'colors';
  */
 export const GitMirrorYargs:Record<string, yargs.Options> = {
   input: {
-    alias: ['i'],
+    alias: ['i', 'origin'],
     type: 'string',
     describe: 'JSON file containing the repositories to mirror or ' +
               'a git repository URL for a single mirror',
